@@ -5,7 +5,8 @@
 # All Megvii Modifications are Copyright (C) 2019-2021 Megvii Inc. All rights reserved.
 import pprint
 import sys
-from collections import Mapping, OrderedDict
+from collections import OrderedDict
+from _collections_abc import Mapping
 from loguru import logger
 
 import numpy as np

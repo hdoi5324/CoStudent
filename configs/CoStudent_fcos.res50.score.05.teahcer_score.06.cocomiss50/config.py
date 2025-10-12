@@ -5,7 +5,7 @@ from coco import COCOMutiBranch  # noqa
 
 _config_dict = dict(
     MODEL=dict(
-        WEIGHTS="/path/R-50.pkl",
+        WEIGHTS="models/R-50Imagenet_backboneonly.pkl",
         RESNETS=dict(DEPTH=50),
         FCOS=dict(
             CENTERNESS_ON_REG=True,
@@ -14,7 +14,7 @@ _config_dict = dict(
             BBOX_REG_WEIGHTS=(1.0, 1.0, 1.0, 1.0),
             FOCAL_LOSS_GAMMA=2.0,
             FOCAL_LOSS_ALPHA=0.25,
-            IOU_LOSS_TYPE="giou",
+            IOU_LOSS_TYPE="dn_iou", #giou dn_iou
             CENTER_SAMPLING_RADIUS=1.5,
             OBJECT_SIZES_OF_INTEREST=[
                 [-1, 64],
@@ -134,7 +134,7 @@ _config_dict = dict(
             ],
             TEST_PIPELINES=[
                 ("ResizeShortestEdge",
-                 dict(short_edge_length=800, max_size=1333, sample_style="choice")),
+                 dict(short_edge_length=(1024, 1024), max_size=2048, sample_style='choice')), # reduces short size to 1024 keeping long edge at or below 2048
             ],
         ),
     ),

@@ -1,7 +1,6 @@
 Cython
 numpy
 dataclasses
-sklearn
 scikit-learn
 lvis
 pandas

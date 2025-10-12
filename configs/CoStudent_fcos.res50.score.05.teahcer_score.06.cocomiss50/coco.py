@@ -28,16 +28,24 @@ _UPDATE_DICT = {
     "coco_2017_train_extreme":
         ("coco/train2017", "coco/annotations/instances_train2017_extreme.json"),
     "coco_missing_50p":
-        ("coco/train2017", "coco_missing_50p.json"),
+        ("coco/train2017", "coco/annotations/coco_missing_50p.json"),
     "coco_voc_0712_trainval":
         ("coco/train2017", "coco/annotations/pascal_trainval0712_missing50p.json"),
+
+    "coco_loose_redcup17711_train_og_only":
+        ("loose/loose_17711/images", "loose/loose_17711/annotations/instances_train_og_only.json"),
+    "coco_squidle_redcup_test":
+        ("squidle_coco/squidle_redcup_test/test2023", "squidle_coco/squidle_redcup_test/annotations/instances_test.json"),
+    "coco_loose_urchin17714_train_og_only":
+        ("loose/loose_17714/images", "loose/loose_17714/annotations/instances_train_og_only.json"),
+    "coco_squidle_urchin_2011_test":
+        ("squidle_coco/squidle_urchin_2011/test2023", "squidle_coco/squidle_urchin_2011/annotations/instances_test.json"),
 }
 
 
 
 PATH_ROUTES.get("COCO")["coco"].update(_UPDATE_DICT)
 PATH_ROUTES.get("COCO")["dataset_type"] = "COCOMutiBranch"
-
 
 
 

@@ -1,7 +1,7 @@
 #include <torch/types.h>
 #include <torch/extension.h>
 #include <ATen/ATen.h>
-#include <THC/THC.h>
+//#include <THC/THC.h>
 #include <math.h>
 #include <stdio.h>
 
