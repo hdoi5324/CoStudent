@@ -724,6 +724,14 @@ class MultiBranchRunner(SimpleRunner):
         if not self.only_forward:
             ret.append(hooks.EvalHook(cfg.TEST.EVAL_PERIOD, test_and_save_results))
 
+        if self.teacher_model is not None:
+            def test_and_save_teacher_results():
+                self._last_eval_results = self.test(self.cfg, self.teacher_model)
+                return self._last_eval_results
+            
+            if not self.only_forward:
+                ret.append(hooks.EvalHook(cfg.TEST.EVAL_PERIOD, test_and_save_teacher_results))
+        
         if comm.is_main_process():
             # Here the default print/log frequency of each writer is used.
             # run writers in the end, so that evaluation metrics are written
