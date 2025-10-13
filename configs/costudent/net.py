@@ -1,7 +1,7 @@
 import logging
 
 from cvpods.layers import ShapeSpec
-from fcos import FCOS
+from configs.costudent.fcos import FCOS
 from cvpods.modeling.backbone import Backbone
 from cvpods.modeling.backbone.fpn import build_retinanet_resnet_fpn_backbone
 from cvpods.modeling.anchor_generator import ShiftGenerator

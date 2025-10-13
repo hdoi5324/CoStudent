@@ -190,7 +190,7 @@ if __name__ == "__main__":
 
     from config import config
 
-    from net import build_model
+    from configs.costudent.net import build_model
 
     config.link_log()
     logger.info("Create soft link to {}".format(config.OUTPUT_DIR))

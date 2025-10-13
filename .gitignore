@@ -47,3 +47,4 @@ tools/pods_*
 # soft link
 **/log
 
+/outputs/

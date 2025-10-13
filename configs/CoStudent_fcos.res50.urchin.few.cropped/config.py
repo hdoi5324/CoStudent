@@ -1,11 +1,11 @@
 import os.path as osp
 
 from cvpods.configs.fcos_config import FCOSConfig
-from coco import COCOMutiBranch  # noqa
+from cvpods.configs.coco import COCOMutiBranch  # noqa
 
 _config_dict = dict(
     SEED=2234575,
-    OUTPUT_DIR="outputs/loose/redcup_few_cropped_costudent",
+    OUTPUT_DIR="outputs/loose/urchin_few_cropped_costudent",
     MODEL=dict(
         WEIGHTS="./models/R-50Imagenet_backboneonly.pkl",
         RESNETS=dict(DEPTH=50),
@@ -33,8 +33,8 @@ _config_dict = dict(
     ),
     DATASETS=dict(
         CO_MINING=True,
-        TRAIN=("coco_loose_redcup17711_train_cropped_only",),
-        TEST=("coco_squidle_redcup_test",),
+        TRAIN=("coco_loose_urchin17714_train_cropped_only",),
+        TEST=("coco_squidle_urchin_2011_test",),
     ),
     TRAINER=dict(
         NAME="MultiBranchRunner",
@@ -51,18 +51,18 @@ _config_dict = dict(
     ),
     
     SOLVER=dict(
-            CHECKPOINT_PERIOD=1000,
+            CHECKPOINT_PERIOD=1500, # 1462 images
             LR_SCHEDULER=dict(
-                MAX_ITER=9000, # divided by 10 for smaller dataset
-                STEPS=(6000, 8000), # divided by 10 for smaller dataset
+                MAX_ITER=18000, # divided by 10 for smaller dataset 12 epochs
+                STEPS=(12000, 15000), # divided by 10 for smaller dataset 8 epochs and 10.6 epochs
             ),
             OPTIMIZER=dict(
                 BASE_LR=0.0125, # learning rate in original config is used for 8 GPUs 16 total batch;
             ),
-            IMS_PER_DEVICE=4, # Creates a batch of 16 for 2 GPUs
+            IMS_PER_DEVICE=8,
     ),
     TEST=dict(
-        EVAL_PERIOD=500,
+        EVAL_PERIOD=1500,
         DETECTIONS_PER_IMAGE=100,
     ),
     DATALOADER=dict(

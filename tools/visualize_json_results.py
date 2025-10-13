@@ -7,6 +7,7 @@
 import argparse
 import json
 import os
+import sys
 from collections import defaultdict
 import megfile
 import tqdm
@@ -67,14 +68,22 @@ if __name__ == "__main__":
     parser.add_argument("--output", required=True, help="output directory")
     parser.add_argument("--config", required=True,
                         help="path to a python file with a definition of `config`")
+    parser.add_argument("--dir", required=True,
+                        help="path to a python file with a definition of `config`")
     parser.add_argument("--dataset",
                         help="name of the dataset. Use DATASETS.TEST[0] if not specified.",
                         default="")
     parser.add_argument("--conf-threshold", default=0.5, type=float, help="confidence threshold")
     args = parser.parse_args()
 
+    extra_sys_path = ".." if args.dir is None else args.dir
+    sys.path.append(extra_sys_path)
+
+    from config import config
+
+    from net import build_model
     logger = setup_logger()
-    cfg = setup_cfg(args.config, logger)
+    cfg = config #setup_cfg(args.config, logger)
     with megfile.smart_open(args.input, "r") as f:
         predictions = json.load(f)
 
