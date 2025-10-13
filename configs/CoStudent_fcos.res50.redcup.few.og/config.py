@@ -1,7 +1,7 @@
 import os.path as osp
 
 from cvpods.configs.fcos_config import FCOSConfig
-from cvpods.configs.coco import COCOMutiBranch  # noqa
+from configs.costudent.coco import COCOMutiBranch  # noqa
 
 _config_dict = dict(
     SEED=2234575,
@@ -51,18 +51,18 @@ _config_dict = dict(
     ),
     
     SOLVER=dict(
-            CHECKPOINT_PERIOD=250,
+            CHECKPOINT_PERIOD=1200,
             LR_SCHEDULER=dict(
-                MAX_ITER=3000, # divided by 10 for smaller dataset
-                STEPS=(2000, 2500), # divided by 10 for smaller dataset
+                MAX_ITER=14400,
+                STEPS=(9600, 12800),
             ),
             OPTIMIZER=dict(
-                BASE_LR=0.0125, # learning rate in original config is used for 8 GPUs 16 total batch;
+                BASE_LR=0.01, # learning rate in original config is used for 8 GPUs 16 total batch;
             ),
-            IMS_PER_DEVICE=4, # Creates a batch of 16 for 2 GPUs
+            IMS_PER_DEVICE=8,
     ),
     TEST=dict(
-        EVAL_PERIOD=250,
+        EVAL_PERIOD=1200,
         DETECTIONS_PER_IMAGE=100,
     ),
     DATALOADER=dict(

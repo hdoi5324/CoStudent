@@ -66,7 +66,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--input", required=True, help="JSON file produced by the model")
     parser.add_argument("--output", required=True, help="output directory")
-    parser.add_argument("--config", required=True,
+    parser.add_argument("--config", required=False,
                         help="path to a python file with a definition of `config`")
     parser.add_argument("--dir", required=True,
                         help="path to a python file with a definition of `config`")
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     from config import config
 
-    from net import build_model
+    from configs.costudent.net import build_model
     logger = setup_logger()
     cfg = config #setup_cfg(args.config, logger)
     with megfile.smart_open(args.input, "r") as f:

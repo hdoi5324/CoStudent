@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     from config import config
 
-    from net import build_model
+    from configs.costudent.net import build_model
     cfg = config #setup(args)
 
     dirname = args.output_dir
