@@ -11,6 +11,7 @@ import sys
 from collections import defaultdict
 import megfile
 import tqdm
+import matplotlib.pyplot as plt
 
 import cv2
 import numpy as np
@@ -100,16 +101,13 @@ if __name__ == "__main__":
     dicts = dataset.datasets[0].dataset_dicts
     metadata = dataset.meta
     if hasattr(metadata, "thing_dataset_id_to_contiguous_id"):
-
         def dataset_id_map(ds_id):
             return metadata.thing_dataset_id_to_contiguous_id[ds_id]
-
     elif "lvis" in args.dataset:
         # LVIS results are in the same format as COCO results, but have a different
         # mapping from dataset category id to contiguous category id in [0, #categories - 1]
         def dataset_id_map(ds_id):
             return ds_id - 1
-
     else:
         raise ValueError("Unsupported dataset: {}".format(args.dataset))
 
@@ -122,9 +120,11 @@ if __name__ == "__main__":
         predictions = create_instances(pred_by_image[dic["image_id"]], img.shape[:2])
         vis = Visualizer(img, metadata)
         vis_pred = vis.draw_instance_predictions(predictions).get_image()
+        plt.close()
 
         vis = Visualizer(img, metadata)
         vis_gt = vis.draw_dataset_dict(dic).get_image()
+        plt.close()
 
         concat = np.concatenate((vis_pred, vis_gt), axis=1)
         cv2.imwrite(os.path.join(args.output, basename), concat[:, :, ::-1])

@@ -80,7 +80,10 @@ if __name__ == "__main__":
 
     scale = 2.0 if args.show else 1.0
     if args.source == "dataloader":
-        train_data_loader = build_train_loader(cfg)
+        from cvpods.data.build import build_test_loader
+        train_data_loader = build_test_loader(cfg)
+        metadata = train_data_loader.dataset.meta
+
         for batch in train_data_loader:
             for per_image in batch:
                 # Pytorch tensor is in (C, H, W) format

@@ -21,6 +21,9 @@ def main(args):
         path, file = os.path.split(file_path)
         if file == 'metrics.json':
             path_split = os.path.split(path)[1].split('_')
+            if path_split[-1] == '0.0125':           
+                last_item = path_split.pop()         # Remove the last item
+                path_split.insert(-1, last_item)
             path_split = path_split[:-1] if path_split[-1].isdigit() else path_split
             prefix = '_'.join(path_split)
             grouped_files[prefix].append(file_path)
@@ -46,7 +49,7 @@ def main(args):
                         except (ValueError, SyntaxError) as e:
                             print(f"Error parsing line: {line}\n{e}")
     
-    data = [line for line in data if 'bbox/AP50' in line]
+    data = [line for line in data if 'bbox/AP50' in line and line['iteration'] > 1000]
     if len(data) == 0:
         print(f"No metrics found in {base_dir}")
         return None

@@ -5,7 +5,7 @@ from configs.costudent.coco import COCOMutiBranch  # noqa
 
 _config_dict = dict(
     SEED=2234575,
-    OUTPUT_DIR="outputs/loose/urchin_few_og_costudent",
+    OUTPUT_DIR="outputs/loose/redcup_many_cropped_costudent",
     MODEL=dict(
         WEIGHTS="./models/R-50Imagenet_backboneonly.pkl",
         RESNETS=dict(DEPTH=50),
@@ -33,10 +33,9 @@ _config_dict = dict(
     ),
     DATASETS=dict(
         CO_MINING=True,
-        TRAIN=("coco_loose_urchin17714_train_og_only",),
-        TEST=("coco_squidle_urchin_2011_test",),
+        TRAIN=("coco_loose_redcup17648_train_cropped_only",),
+        TEST=("coco_squidle_redcup_test",),
     ),
-   
     TRAINER=dict(
         NAME="MultiBranchRunner",
         FP16=dict(

@@ -52,10 +52,10 @@ _config_dict = dict(
     ),
     
     SOLVER=dict(
-            CHECKPOINT_PERIOD=1200,
+            CHECKPOINT_PERIOD=12000,
             LR_SCHEDULER=dict(
-                MAX_ITER=14400,
-                STEPS=(9600, 12800),
+                MAX_ITER=144000,
+                STEPS=(96000, 128000),
             ),
             OPTIMIZER=dict(
                 BASE_LR=0.01, # learning rate in original config is used for 8 GPUs 16 total batch;
@@ -63,7 +63,7 @@ _config_dict = dict(
             IMS_PER_DEVICE=8,
     ),
     TEST=dict(
-        EVAL_PERIOD=1200,
+        EVAL_PERIOD=6000,
         DETECTIONS_PER_IMAGE=100,
     ),
     DATALOADER=dict(
