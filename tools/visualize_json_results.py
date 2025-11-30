@@ -61,6 +61,19 @@ def create_instances(predictions, image_size):
     return ret
 
 
+def nms(detections, iou_threshold=0.5):
+    
+    
+    from torchvision.ops import nms
+    import torch
+
+    boxes = torch.tensor([d['bbox'] for d in detections], dtype=torch.float)
+    scores = torch.tensor([d['score'] for d in detections])
+    keep_indices = nms(boxes, scores, iou_threshold)
+    keep = [detections[idx] for idx in keep_indices]
+    return keep
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="A script that visualizes the json predictions from COCO or LVIS dataset."
@@ -87,10 +100,12 @@ if __name__ == "__main__":
     cfg = config #setup_cfg(args.config, logger)
     with megfile.smart_open(args.input, "r") as f:
         predictions = json.load(f)
-
+        
     pred_by_image = defaultdict(list)
     for p in predictions:
         pred_by_image[p["image_id"]].append(p)
+    for k, v in pred_by_image.items():
+        pred_by_image[k] = nms(v, iou_threshold=0.5)
 
     # TODO: add DatasetCatalog, MetadataCatalog
     dataset = build_dataset(
@@ -125,6 +140,7 @@ if __name__ == "__main__":
         vis = Visualizer(img, metadata)
         vis_gt = vis.draw_dataset_dict(dic).get_image()
         plt.close()
+        plt.close(vis.output.fig)
 
         concat = np.concatenate((vis_pred, vis_gt), axis=1)
         cv2.imwrite(os.path.join(args.output, basename), concat[:, :, ::-1])

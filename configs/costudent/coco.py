@@ -78,6 +78,20 @@ _UPDATE_DICT = {
         ("loose/loose_17863/images", "loose/loose_17863/annotations/instances_train_og_only.json"),
     "coco_loose_ob17863_train_cropped_only":
         ("loose/loose_17863/images", "loose/loose_17863/annotations/instances_train_cropped_only.json"),
+    
+        "coco_squidle_anemone_sparse_test":
+        ("squidle_coco/squidle_anemone_sparse_point_test/test2023", "squidle_coco/squidle_anemone_sparse_point_test/annotations/instances_test.json"),  
+        "coco_squidle_anemone_full_test":
+        ("squidle_coco/squidle_anemone_full_test/test2023", "squidle_coco/squidle_anemone_full_test/annotations/instances_test.json"),  
+    "coco_squidle_anemone_train_sparse":
+        ("squidle_coco/squidle_anemone_sparse_point_train/train2023", "squidle_coco/squidle_anemone_sparse_point_train/annotations/instances_train.json"),      
+    "coco_loose_anemone18051_train_og_only":
+        ("loose/loose_18051/images", "loose/loose_18051/annotations/instances_train_og_only.json"),
+    "coco_loose_anemone18051_train_cropped_only":
+        ("loose/loose_18051/images", "loose/loose_18051/annotations/instances_train_cropped_only.json"),
+    
+    "coco_weddell_sea":
+        ("WeddellSea/Results/images", "WeddellSea/Results/annotations/dataset_anemones.json"),  
 }
 
 
