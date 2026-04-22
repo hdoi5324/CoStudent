@@ -3,6 +3,8 @@
 # Copyright (c) Megvii Inc. and its affiliates.
 
 import imp
+import json
+import os
 from PIL import Image
 import torchvision.transforms as tfs
 import copy
@@ -96,6 +98,43 @@ _UPDATE_DICT = {
 
 
 
+def _apply_dataset_overrides_from_env():
+    """
+    Register temporary COCO splits via env var instead of editing this file.
+
+    COSTUDENT_DATASET_OVERRIDES format:
+    {
+      "dataset_name": ["relative/or/absolute/image_root", "relative/or/absolute/annotations.json"]
+    }
+    """
+    raw = os.environ.get("COSTUDENT_DATASET_OVERRIDES")
+    if not raw:
+        return
+
+    try:
+        overrides = json.loads(raw)
+    except Exception as exc:
+        raise ValueError(
+            "Invalid COSTUDENT_DATASET_OVERRIDES JSON. "
+            "Expected mapping: dataset_name -> [image_root, json_file]."
+        ) from exc
+
+    if not isinstance(overrides, dict):
+        raise ValueError("COSTUDENT_DATASET_OVERRIDES must be a JSON object.")
+
+    for dataset_name, route in overrides.items():
+        if (
+            not isinstance(route, (list, tuple))
+            or len(route) != 2
+            or not all(isinstance(v, str) for v in route)
+        ):
+            raise ValueError(
+                f"Override for '{dataset_name}' must be [image_root, json_file], both strings."
+            )
+        _UPDATE_DICT[dataset_name] = (route[0], route[1])
+
+
+_apply_dataset_overrides_from_env()
 PATH_ROUTES.get("COCO")["coco"].update(_UPDATE_DICT)
 PATH_ROUTES.get("COCO")["dataset_type"] = "COCOMutiBranch"
 
