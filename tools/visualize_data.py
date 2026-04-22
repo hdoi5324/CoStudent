@@ -7,25 +7,26 @@ import argparse
 import os
 from itertools import chain
 import tqdm
+import sys
 
 import cv2
 import numpy as np
 from PIL import Image
 
-from cvpods.config import get_cfg
+#from cvpods.config import get_cfg
 from cvpods.data import DatasetCatalog, MetadataCatalog, build_train_loader
 from cvpods.data import detection_utils as utils
-from cvpods.data.build import filter_images_with_few_keypoints
+#from cvpods.data.build import filter_images_with_few_keypoints
 from cvpods.utils import Visualizer, setup_logger
 
 
-def setup(args):
-    cfg = get_cfg()
-    if args.config_file:
-        cfg.merge_from_file(args.config_file)
-    cfg.merge_from_list(args.opts)
-    cfg.freeze()
-    return cfg
+#def setup(args):
+    #cfg = get_cfg()
+    #if args.config_file:
+    #    cfg.merge_from_file(args.config_file)
+    #cfg.merge_from_list(args.opts)
+    #cfg.freeze()
+    #return cfg
 
 
 def parse_args(in_args=None):
@@ -37,6 +38,8 @@ def parse_args(in_args=None):
         help="visualize the annotations or the data loader (with pre-processing)",
     )
     parser.add_argument("--config-file", default="", metavar="FILE", help="path to config file")
+    parser.add_argument("--dir", required=True,
+                    help="path to a python file with a definition of `config`")
     parser.add_argument("--output-dir", default="./", help="path to output directory")
     parser.add_argument("--show", action="store_true", help="show output in a window")
     parser.add_argument(
@@ -51,8 +54,15 @@ def parse_args(in_args=None):
 if __name__ == "__main__":
     args = parse_args()
     logger = setup_logger()
-    logger.info("Arguments: " + str(args))
-    cfg = setup(args)
+#    logger.info("Arguments: " + str(args))
+    
+    extra_sys_path = ".." if args.dir is None else args.dir
+    sys.path.append(extra_sys_path)
+
+    from config import config
+
+    from configs.costudent.net import build_model
+    cfg = config #setup(args)
 
     dirname = args.output_dir
     os.makedirs(dirname, exist_ok=True)
@@ -70,7 +80,10 @@ if __name__ == "__main__":
 
     scale = 2.0 if args.show else 1.0
     if args.source == "dataloader":
-        train_data_loader = build_train_loader(cfg)
+        from cvpods.data.build import build_test_loader
+        train_data_loader = build_test_loader(cfg)
+        metadata = train_data_loader.dataset.meta
+
         for batch in train_data_loader:
             for per_image in batch:
                 # Pytorch tensor is in (C, H, W) format
@@ -92,8 +105,8 @@ if __name__ == "__main__":
                 output(vis, str(per_image["image_id"]) + ".jpg")
     else:
         dicts = list(chain.from_iterable([DatasetCatalog.get(k) for k in cfg.DATASETS.TRAIN]))
-        if cfg.MODEL.KEYPOINT_ON:
-            dicts = filter_images_with_few_keypoints(dicts, 1)
+        #if cfg.MODEL.KEYPOINT_ON:
+        #    dicts = filter_images_with_few_keypoints(dicts, 1)
         for dic in tqdm.tqdm(dicts):
             img = utils.read_image(dic["file_name"], "RGB")
             visualizer = Visualizer(img, metadata=metadata, scale=scale)

@@ -7,9 +7,11 @@
 import argparse
 import json
 import os
+import sys
 from collections import defaultdict
 import megfile
 import tqdm
+import matplotlib.pyplot as plt
 
 import cv2
 import numpy as np
@@ -59,13 +61,28 @@ def create_instances(predictions, image_size):
     return ret
 
 
+def nms(detections, iou_threshold=0.5):
+    
+    
+    from torchvision.ops import nms
+    import torch
+
+    boxes = torch.tensor([d['bbox'] for d in detections], dtype=torch.float)
+    scores = torch.tensor([d['score'] for d in detections])
+    keep_indices = nms(boxes, scores, iou_threshold)
+    keep = [detections[idx] for idx in keep_indices]
+    return keep
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="A script that visualizes the json predictions from COCO or LVIS dataset."
     )
     parser.add_argument("--input", required=True, help="JSON file produced by the model")
     parser.add_argument("--output", required=True, help="output directory")
-    parser.add_argument("--config", required=True,
+    parser.add_argument("--config", required=False,
+                        help="path to a python file with a definition of `config`")
+    parser.add_argument("--dir", required=True,
                         help="path to a python file with a definition of `config`")
     parser.add_argument("--dataset",
                         help="name of the dataset. Use DATASETS.TEST[0] if not specified.",
@@ -73,14 +90,22 @@ if __name__ == "__main__":
     parser.add_argument("--conf-threshold", default=0.5, type=float, help="confidence threshold")
     args = parser.parse_args()
 
+    extra_sys_path = ".." if args.dir is None else args.dir
+    sys.path.append(extra_sys_path)
+
+    from config import config
+
+    from configs.costudent.net import build_model
     logger = setup_logger()
-    cfg = setup_cfg(args.config, logger)
+    cfg = config #setup_cfg(args.config, logger)
     with megfile.smart_open(args.input, "r") as f:
         predictions = json.load(f)
-
+        
     pred_by_image = defaultdict(list)
     for p in predictions:
         pred_by_image[p["image_id"]].append(p)
+    for k, v in pred_by_image.items():
+        pred_by_image[k] = nms(v, iou_threshold=0.5)
 
     # TODO: add DatasetCatalog, MetadataCatalog
     dataset = build_dataset(
@@ -91,16 +116,13 @@ if __name__ == "__main__":
     dicts = dataset.datasets[0].dataset_dicts
     metadata = dataset.meta
     if hasattr(metadata, "thing_dataset_id_to_contiguous_id"):
-
         def dataset_id_map(ds_id):
             return metadata.thing_dataset_id_to_contiguous_id[ds_id]
-
     elif "lvis" in args.dataset:
         # LVIS results are in the same format as COCO results, but have a different
         # mapping from dataset category id to contiguous category id in [0, #categories - 1]
         def dataset_id_map(ds_id):
             return ds_id - 1
-
     else:
         raise ValueError("Unsupported dataset: {}".format(args.dataset))
 
@@ -113,9 +135,12 @@ if __name__ == "__main__":
         predictions = create_instances(pred_by_image[dic["image_id"]], img.shape[:2])
         vis = Visualizer(img, metadata)
         vis_pred = vis.draw_instance_predictions(predictions).get_image()
+        plt.close()
 
         vis = Visualizer(img, metadata)
         vis_gt = vis.draw_dataset_dict(dic).get_image()
+        plt.close()
+        plt.close(vis.output.fig)
 
         concat = np.concatenate((vis_pred, vis_gt), axis=1)
         cv2.imwrite(os.path.join(args.output, basename), concat[:, :, ::-1])

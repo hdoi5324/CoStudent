@@ -36,18 +36,63 @@ _UPDATE_DICT = {
         ("loose/loose_17711/images", "loose/loose_17711/annotations/instances_train_og_only.json"),
     "coco_loose_redcup17711_train_cropped_only":
         ("loose/loose_17711/images", "loose/loose_17711/annotations/instances_train_cropped_only.json"),
+    "coco_loose_redcup17648_train_og_only":
+        ("loose/loose_17648/images", "loose/loose_17648/annotations/instances_train_og_only.json"),
+    "coco_loose_redcup17648_train_cropped_only": 
+        ("loose/loose_17648/images", "loose/loose_17648/annotations/instances_train_cropped_only.json"),
+    "coco_loose_redcup17647_train_og_only":
+        ("loose/loose_17647/images", "loose/loose_17647/annotations/instances_train_og_only.json"),
+    "coco_loose_redcup17647_train_cropped_only":
+        ("loose/loose_17647/images", "loose/loose_17647/annotations/instances_train_cropped_only.json"),
+    
     "coco_squidle_redcup_train_sparse":
         ("squidle_coco/squidle_redcup_full_train_sparse/images", "squidle_coco/squidle_redcup_full_train_sparse/annotations/instances_train.json"),
     "coco_squidle_redcup_test":
         ("squidle_coco/squidle_redcup_test/test2023", "squidle_coco/squidle_redcup_test/annotations/instances_test.json"),    
+    
+    
+    
     "coco_loose_urchin17714_train_og_only":
         ("loose/loose_17714/images", "loose/loose_17714/annotations/instances_train_og_only.json"),
     "coco_loose_urchin17714_train_cropped_only":
         ("loose/loose_17714/images", "loose/loose_17714/annotations/instances_train_cropped_only.json"),
+    "coco_loose_urchin17631_train_og_only":
+        ("loose/loose_17631/images", "loose/loose_17631/annotations/instances_train_og_only.json"),
+    "coco_loose_urchin17631_train_cropped_only":
+        ("loose/loose_17631/images", "loose/loose_17631/annotations/instances_train_cropped_only.json"),    
+    "coco_loose_urchin17630_train_og_only":
+        ("loose/loose_17630/images", "loose/loose_17630/annotations/instances_train_og_only.json"),
+    "coco_loose_urchin17630_train_cropped_only":
+        ("loose/loose_17630/images", "loose/loose_17630/annotations/instances_train_cropped_only.json"),
+    
     "coco_squidle_urchin_train_sparse":
         ("squidle_coco/squidle_urchin_full_train_sparse/images", "squidle_coco/squidle_urchin_full_train_sparse/annotations/instances_train.json"),
     "coco_squidle_urchin_2011_test":
-        ("squidle_coco/squidle_urchin_2011/test2023", "squidle_coco/squidle_urchin_2011/annotations/instances_test2023.json"),}
+        ("squidle_coco/squidle_urchin_2011/test2023", "squidle_coco/squidle_urchin_2011/annotations/instances_test2023.json"),
+
+    "coco_squidle_ob_test":
+        ("squidle_coco/squidle_ob_sparse_point_test/test2023", "squidle_coco/squidle_ob_sparse_point_test/annotations/instances_test.json"),  
+    "coco_squidle_ob_train":
+        ("squidle_coco/squidle_ob_sparse_point_train/train2023", "squidle_coco/squidle_ob_sparse_point_train/annotations/instances_train.json"),      
+    "coco_loose_ob17863_train_og_only":
+        ("loose/loose_17863/images", "loose/loose_17863/annotations/instances_train_og_only.json"),
+    "coco_loose_ob17863_train_cropped_only":
+        ("loose/loose_17863/images", "loose/loose_17863/annotations/instances_train_cropped_only.json"),
+    
+        "coco_squidle_anemone_sparse_test":
+        ("squidle_coco/squidle_anemone_sparse_point_test/test2023", "squidle_coco/squidle_anemone_sparse_point_test/annotations/instances_test.json"),  
+        "coco_squidle_anemone_full_test":
+        ("squidle_coco/squidle_anemone_full_test/test2023", "squidle_coco/squidle_anemone_full_test/annotations/instances_test.json"),  
+    "coco_squidle_anemone_train_sparse":
+        ("squidle_coco/squidle_anemone_sparse_point_train/train2023", "squidle_coco/squidle_anemone_sparse_point_train/annotations/instances_train.json"),      
+    "coco_loose_anemone18051_train_og_only":
+        ("loose/loose_18051/images", "loose/loose_18051/annotations/instances_train_og_only.json"),
+    "coco_loose_anemone18051_train_cropped_only":
+        ("loose/loose_18051/images", "loose/loose_18051/annotations/instances_train_cropped_only.json"),
+    
+    "coco_weddell_sea":
+        ("WeddellSea/Results/images", "WeddellSea/Results/annotations/dataset_anemones.json"),  
+}
 
 
 

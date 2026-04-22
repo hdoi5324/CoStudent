@@ -180,10 +180,10 @@ def main(args, config, build_model):
         if cfg.TEST.AUG.ENABLED:
             res = runner_decrator(RUNNERS.get(cfg.TRAINER.NAME)).test_with_TTA(cfg, model)
         else:
-            if teacher_model is not None:
-                res = runner_decrator(RUNNERS.get(cfg.TRAINER.NAME)).test(cfg, model,teacher_model=teacher_model)
-            else:
-                res = runner_decrator(RUNNERS.get(cfg.TRAINER.NAME)).test(cfg, model)
+            #if teacher_model is not None:
+            #    res = runner_decrator(RUNNERS.get(cfg.TRAINER.NAME)).test(cfg, model,teacher_model=teacher_model)
+            #else:
+            res = runner_decrator(RUNNERS.get(cfg.TRAINER.NAME)).test(cfg, model)
 
         if comm.is_main_process():
             verify_results(cfg, res)
@@ -194,6 +194,8 @@ def main(args, config, build_model):
 if __name__ == "__main__":
     args = test_argument_parser().parse_args()
 
+    #args = train_argument_parser().parse_args()
+    
     logger.info("Command Line Args: {}".format(args))
     if args.num_gpus is None:
         args.num_gpus = torch.cuda.device_count()
@@ -201,8 +203,9 @@ if __name__ == "__main__":
     extra_sys_path = ".." if args.dir is None else args.dir
     sys.path.append(extra_sys_path)
 
-    from config import config  # isort:skip  # noqa: E402
-    from net import build_model  # isort:skip  # noqa: E402
+    from config import config
+    from configs.costudent.net import build_model
+
 
     launch(
         main,

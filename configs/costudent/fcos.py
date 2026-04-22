@@ -4,7 +4,7 @@ import math
 from typing import List
 import torch
 from cvpods.modeling.losses import sigmoid_focal_loss_jit, iou_loss
-from dn_iou_loss import dn_diou_loss
+from configs.costudent.dn_iou_loss import dn_diou_loss
 from torch import nn
 import torch.nn.functional as F
 import os

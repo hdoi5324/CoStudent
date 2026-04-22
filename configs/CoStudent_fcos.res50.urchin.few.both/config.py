@@ -1,11 +1,11 @@
 import os.path as osp
 
 from cvpods.configs.fcos_config import FCOSConfig
-from coco import COCOMutiBranch  # noqa
+from configs.costudent.coco import COCOMutiBranch  # noqa
 
 _config_dict = dict(
     SEED=2234575,
-    OUTPUT_DIR="outputs/loose/urchin_og_few_costudent",
+    OUTPUT_DIR="outputs/loose/urchin_few_both_costudent",
     MODEL=dict(
         WEIGHTS="./models/R-50Imagenet_backboneonly.pkl",
         RESNETS=dict(DEPTH=50),
@@ -33,7 +33,7 @@ _config_dict = dict(
     ),
     DATASETS=dict(
         CO_MINING=True,
-        TRAIN=("coco_loose_urchin17714_train_og_only",),
+        TRAIN=("coco_loose_urchin17714_train_og_only","coco_loose_urchin17714_train_cropped_only",),
         TEST=("coco_squidle_urchin_2011_test",),
     ),
    
@@ -52,18 +52,18 @@ _config_dict = dict(
     ),
     
     SOLVER=dict(
-            CHECKPOINT_PERIOD=1462, # 1462 images
+            CHECKPOINT_PERIOD=12000,
             LR_SCHEDULER=dict(
-                MAX_ITER=17544, # divided by 10 for smaller dataset 12 epochs
-                STEPS=(11696, 15595), # divided by 10 for smaller dataset 8 epochs and 10.6 epochs
+                MAX_ITER=144000,
+                STEPS=(96000, 128000),
             ),
             OPTIMIZER=dict(
-                BASE_LR=0.0125, # learning rate in original config is used for 8 GPUs 16 total batch;
+                BASE_LR=0.01, # learning rate in original config is used for 8 GPUs 16 total batch;
             ),
             IMS_PER_DEVICE=8,
     ),
     TEST=dict(
-        EVAL_PERIOD=1462,
+        EVAL_PERIOD=6000,
         DETECTIONS_PER_IMAGE=100,
     ),
     DATALOADER=dict(
