@@ -185,8 +185,16 @@ if __name__ == "__main__":
     if args.num_gpus is None:
         args.num_gpus = torch.cuda.device_count()
 
-    extra_sys_path = ".." if args.dir is None else args.dir
-    sys.path.append(extra_sys_path)
+    # Ensure repository root is importable when launched as:
+    #   python tools/train_net.py ...
+    #   uv run tools/train_net.py ...
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+
+    extra_sys_path = repo_root if args.dir is None else os.path.abspath(args.dir)
+    if extra_sys_path not in sys.path:
+        sys.path.append(extra_sys_path)
 
     from config import config
 

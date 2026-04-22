@@ -65,6 +65,46 @@ The annotation of "keep1" is from the authors of [SIOD paper](https://arxiv.org/
 
 ## 3. Prepare environment
 
+Reproduced training in the paper uses **PyTorch 1.8.0** with the **CUDA 11.1** wheels (`+cu111`). Those wheels ship a CUDA 11.1 user-space runtime and require an NVIDIA **display driver new enough for CUDA 11.1** (Linux: about **450.80** or newer). That includes recent drivers such as **570.86.10**, so you do **not** need a newer PyTorch line for driver compatibility alone. If you must move off the 1.8 wheels (for example unsupported Python), the closest remaining **1.x** line with broad wheels is about **1.13.1** with a matching `+cu117` / `+cu118` build from [previous PyTorch versions](https://pytorch.org/get-started/previous-versions/).
+
+### Option A (recommended): [uv](https://docs.astral.sh/uv/)
+
+[uv](https://github.com/astral-sh/uv) creates and populates environments much faster than conda. The setup script lives in this repo; **use the path to your own clone** (for example `~/GitHub/CoStudent_new`), not a literal `/path/...` string.
+
+From inside your clone:
+
+```shell
+cd ~/GitHub/CoStudent_new   # <- path to your clone
+bash tools/setup_uv_env.sh
+source .venv/bin/activate
+```
+
+Or from any directory (script switches to the repo root automatically):
+
+```shell
+bash ~/GitHub/CoStudent_new/tools/setup_uv_env.sh
+source ~/GitHub/CoStudent_new/.venv/bin/activate
+```
+
+The script uses **Python 3.9** by default (set `PYTHON_VERSION=3.8` if you prefer). The uv path installs **PyTorch 2.8.0+cu128** and **torchvision 0.23.0+cu128**; `numpy<2` is pinned first to reduce breakage with older code paths.
+
+Equivalent manual steps:
+
+```shell
+cd ~/GitHub/CoStudent_new   # <- path to your clone
+uv venv --python 3.9 .venv
+source .venv/bin/activate
+uv pip install "numpy>=1.19,<2"
+uv pip install torch==2.8.0+cu128 torchvision==0.23.0+cu128 \
+  --extra-index-url https://download.pytorch.org/whl/cu128
+uv pip install -r requirements.txt
+uv pip install -e . --no-build-isolation
+```
+
+**`--no-build-isolation`** is required because `setup.py` imports `torch` before extensions build; a default isolated build does not install `torch` into the build environment.
+
+### Option B: conda (original)
+
 **Step 1.** Create a conda environment and activate it.
 
 ```shell
@@ -90,9 +130,9 @@ pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 -f https://download.pyto
 pip install -r requirements.txt
 ```
 
-**Step 4.**  Build cvpods as follows:
+**Step 4.**  Build cvpods as follows (use the path to **your** clone, not a literal `/path/...`):
 ```shell
-cd /path/CoStudent
+cd ~/GitHub/CoStudent_new   # example: path to your clone
 pip install -e .
 ```
 
