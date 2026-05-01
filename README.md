@@ -100,7 +100,11 @@ uv pip install torch==2.8.0+cu128 torchvision==0.23.0+cu128 \
 uv pip install -r requirements.txt
 uv pip install -e . --no-build-isolation
 ```
-
+CUDA 12.4
+```shell
+uv pip install torch==2.5.1+cu124 torchvision==0.20.1+cu124 \
+  --index-url https://download.pytorch.org/whl/cu124
+  ```
 **`--no-build-isolation`** is required because `setup.py` imports `torch` before extensions build; a default isolated build does not install `torch` into the build environment.
 
 ### Option B: conda (original)

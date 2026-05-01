@@ -42,6 +42,16 @@ You can train our mothod CoStudent on COCO-miss50p for 12 epochs by the followin
 ```bash
 bash tools/train.sh
 ```
+```bash
+nohup bash scripts/train_with_dataset.sh --train-images /media/data/phd_data/loose_sam3/20260421-173150_redcup-sparse-coco/images \
+--train-json /media/data/phd_data/loose_sam3/20260421-173150_redcup-sparse-coco/sparse_point_coco.json \
+--test-images /media/data/phd_data/squidle_coco/squidle_redcup_test/test2023 \
+--test-json /media/data/phd_data/squidle_coco/squidle_redcup_test/annotations/instances_test.json \
+-- OUTPUT_DIR outputs/redcup_sam3_og_giou_0.01_1234575 SOLVER.OPTIMIZER.BASE_LR 0.01 SOLVER.IMS_PER_DEVICE 16 SEED 1234575 > output.log 2>&1 &
+
+
+```
+
 
 ## Citations
 ```bibtex
@@ -52,6 +62,7 @@ bash tools/train.sh
       booktitle={ECCV}
 }
 ```
+
 
 ## License
 
