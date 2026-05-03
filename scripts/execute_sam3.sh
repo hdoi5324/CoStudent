@@ -1,4 +1,5 @@
 #!/bin/bash
+source .venv/bin/activate
 
 lrs=(0.005 0.001) # 0.02 for FR batch 16 0.01 for FCOS batch 16 check lr for DETR 0.0001??
 ims_per_gpu=16
